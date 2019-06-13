@@ -4,7 +4,7 @@ defmodule Challenge.Games.Game do
 
   schema "games" do
     field :description, :string
-    field :image, :string
+    field :image, :string, default: ""
     field :name, :string
     field :tags, {:array, :string}, default: []
 
@@ -15,6 +15,8 @@ defmodule Challenge.Games.Game do
   def changeset(game, attrs) do
     game
     |> cast(attrs, [:name, :description, :image, :tags])
+    |> IO.inspect()
     |> validate_required([:name, :description, :image])
+    |> IO.inspect()
   end
 end

@@ -3,6 +3,7 @@ defmodule ChallengeWeb.GameController do
 
   alias Challenge.{Games, Tags}
   alias Challenge.Games.Game
+  alias Challenge.Utils
 
   def index(conn, _params) do
     games = Games.list_games()
@@ -11,20 +12,31 @@ defmodule ChallengeWeb.GameController do
 
   def new(conn, _params) do
     changeset = Games.change_game(%Game{})
-    tags = Tags.list_tags() |> Enum.map(fn tag -> {tag.name, tag.name} end)
+    tags = Tags.list_tags_tuples()
 
     render(conn, "new.html", changeset: changeset, tags: tags)
   end
 
   def create(conn, %{"game" => game_params}) do
-    case Games.create_game(game_params) do
-      {:ok, game} ->
-        conn
-        |> put_flash(:info, "Game created successfully.")
-        |> redirect(to: Routes.game_path(conn, :show, game))
+    if image = game_params["image"] do
+      case Utils.File.move(image, "/public/images") do
+        {:ok, file_name, _} ->
+          game = Map.put(game_params, "image", file_name)
 
-      {:error, %Ecto.Changeset{} = changeset} ->
-        render(conn, "new.html", changeset: changeset)
+          case Games.create_game(game) do
+            {:ok, game} ->
+              conn
+              |> put_flash(:info, "Game created successfully.")
+              |> redirect(to: Routes.game_path(conn, :show, game))
+
+            {:error, %Ecto.Changeset{} = changeset} ->
+              render(conn, "new.html", changeset: changeset)
+          end
+
+        {:error, reason} ->
+          IO.inspect(reason)
+          nil
+      end
     end
   end
 
@@ -36,7 +48,8 @@ defmodule ChallengeWeb.GameController do
   def edit(conn, %{"id" => id}) do
     game = Games.get_game!(id)
     changeset = Games.change_game(game)
-    render(conn, "edit.html", game: game, changeset: changeset)
+    tags = Tags.list_tags_tuples()
+    render(conn, "edit.html", game: game, changeset: changeset, tags: tags)
   end
 
   def update(conn, %{"id" => id, "game" => game_params}) do

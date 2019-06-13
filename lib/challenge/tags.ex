@@ -101,4 +101,8 @@ defmodule Challenge.Tags do
   def change_tag(%Tag{} = tag) do
     Tag.changeset(tag, %{})
   end
+
+  def list_tags_tuples() do
+    list_tags() |> Enum.map(fn tag -> {tag.name, tag.name} end)
+  end
 end
