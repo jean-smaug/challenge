@@ -18,6 +18,8 @@ defmodule ChallengeWeb.GameController do
   end
 
   def create(conn, %{"game" => game_params}) do
+    IO.inspect(game_params)
+
     if image = game_params["image"] do
       case Utils.File.move(image, "/public/images") do
         {:ok, file_name, _} ->

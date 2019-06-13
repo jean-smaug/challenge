@@ -6,6 +6,7 @@ defmodule Challenge.Games.Game do
     field :description, :string
     field :image, :string, default: ""
     field :name, :string
+    field :promoted, :boolean, default: false
     field :tags, {:array, :string}, default: []
 
     timestamps()
@@ -14,9 +15,7 @@ defmodule Challenge.Games.Game do
   @doc false
   def changeset(game, attrs) do
     game
-    |> cast(attrs, [:name, :description, :image, :tags])
-    |> IO.inspect()
+    |> cast(attrs, [:name, :description, :image, :tags, :promoted])
     |> validate_required([:name, :description, :image])
-    |> IO.inspect()
   end
 end

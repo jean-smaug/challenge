@@ -21,6 +21,10 @@
   <%= file_input f, :image %>
   <%= error_tag f, :image %>
 
+  <%= label f, :promoted %>
+  <%= checkbox f, :promoted %>
+  <%= error_tag f, :promoted %>
+
   <div>
     <%= submit "Save" %>
   </div>
