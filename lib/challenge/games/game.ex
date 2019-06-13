@@ -6,6 +6,7 @@ defmodule Challenge.Games.Game do
     field :description, :string
     field :image, :string
     field :name, :string
+    # field :tags, :array:string
 
     timestamps()
   end

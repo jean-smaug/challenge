@@ -18,6 +18,7 @@ defmodule ChallengeWeb.Router do
 
     get "/", PageController, :index
     resources "/games", GameController
+    resources "/tags", TagController
   end
 
   # Other scopes may use custom stacks.
