@@ -1,7 +1,7 @@
 defmodule ChallengeWeb.GameController do
   use ChallengeWeb, :controller
 
-  alias Challenge.Games
+  alias Challenge.{Games, Tags}
   alias Challenge.Games.Game
 
   def index(conn, _params) do
@@ -11,7 +11,9 @@ defmodule ChallengeWeb.GameController do
 
   def new(conn, _params) do
     changeset = Games.change_game(%Game{})
-    render(conn, "new.html", changeset: changeset)
+    tags = Tags.list_tags() |> Enum.map(fn tag -> {tag.name, tag.name} end)
+
+    render(conn, "new.html", changeset: changeset, tags: tags)
   end
 
   def create(conn, %{"game" => game_params}) do

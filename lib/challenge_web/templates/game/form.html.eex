@@ -17,6 +17,8 @@
   <%= text_input f, :image %>
   <%= error_tag f, :image %>
 
+  <%= multiple_select f, :tags, @tags %>
+  
   <div>
     <%= submit "Save" %>
   </div>
