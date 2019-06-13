@@ -16,7 +16,7 @@ defmodule ChallengeWeb.Router do
   scope "/", ChallengeWeb do
     pipe_through :browser
 
-    get "/", PageController, :index
+    get "/", HomeController, :index
     resources "/games", GameController
     resources "/tags", TagController
   end
