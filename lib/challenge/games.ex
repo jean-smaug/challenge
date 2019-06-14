@@ -101,4 +101,8 @@ defmodule Challenge.Games do
   def change_game(%Game{} = game) do
     Game.changeset(game, %{})
   end
+
+  def list_promoted_games() do
+    Repo.all(from(g in Game, where: g.promoted == true))
+  end
 end
